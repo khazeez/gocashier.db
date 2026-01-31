@@ -14,7 +14,7 @@ type productRepo struct {
 type ProductRepo interface {
 	Create(product *models.Product) error
 	GetAll() ([]models.Product, error)
-	UpdateById(product *models.Product) error
+	UpdateById(id int, product *models.Product) error
 	DeleteById(id int) error
 	GetById(id int) (*models.Product, error)
 	GetDetailProductById(id int) (*models.ProductDetail, error)
@@ -70,7 +70,7 @@ func (p *productRepo) GetAll() ([]models.Product, error) {
 
 }
 
-func (p *productRepo) UpdateById(product *models.Product) error {
+func (p *productRepo) UpdateById(id int, product *models.Product) error {
 	query := `UPDATE (category_id, product_name, price, stock) SET (category_id=$1, product_name=$2, price=$3, stock=$4) WHERE id=$5`
 	_, err := p.db.Exec(query, product.CategoryId, product.Name, product.Price, product.Stock, product.ID)
 	if err != nil {
