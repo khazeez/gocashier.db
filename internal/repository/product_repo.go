@@ -57,7 +57,7 @@ func (p *productRepo) GetAll() ([]models.Product, error) {
 			&product.Stock,
 		)
 		if err != nil {
-			fmt.Errorf("error select product: %w", err)
+			return nil, fmt.Errorf("error select product: %w", err)
 		}
 
 		products = append(products, product)
