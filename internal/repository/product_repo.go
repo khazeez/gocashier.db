@@ -31,7 +31,6 @@ func (p *productRepo) Create(product *models.Product) error {
 	query := `INSERT INTO product (id, category_id, product_name, price, stock) VALUES ($1, $2, $3, $4, $5);`
 	_, err := p.db.Exec(query, product.ID, product.CategoryId, product.Name, product.Price, product.Stock)
 	if err != nil {
-		fmt.Errorf("insert product: %w", err)
 		return fmt.Errorf("error create product: %w", err)
 	}
 	return nil
