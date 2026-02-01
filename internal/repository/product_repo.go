@@ -124,9 +124,18 @@ func (p *productRepo) UpdateById(id int, product *models.Product) error {
 
 func (p *productRepo) DeleteById(id int) error {
 	query := `DELETE FROM product WHERE id=$1;`
-	_, err := p.db.Exec(query, id)
+	result, err := p.db.Exec(query, id)
 	if err != nil {
 		return fmt.Errorf("Error delete product: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("error get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return sql.ErrNoRows
 	}
 
 	return nil
