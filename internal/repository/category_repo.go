@@ -77,23 +77,35 @@ func (p *categoryRepo) GetAll() ([]models.Category, error) {
 }
 
 func (p *categoryRepo) UpdateById(id int, category *models.Category) error {
-	query := `UPDATE (category_name, description) SET (category_name=$1, description=$2) WHERE id=$3 RETURNING id, category_name, description;`
-	_, err := p.db.Exec(query, category.Name, category.Description, category.ID)
-	if err != nil {
-		return fmt.Errorf("Error update category: %w", err)
-	}
+	query := `
+		UPDATE category
+		SET category_name = $1,
+		    description   = $2
+		WHERE id = $3
+		RETURNING id, category_name, description;
+	`
 
-	return p.db.QueryRow(
+	err := p.db.QueryRow(
 		query,
 		category.Name,
 		category.Description,
+		id,
 	).Scan(
 		&category.ID,
 		&category.Name,
 		&category.Description,
 	)
 
+	if err == sql.ErrNoRows {
+		return fmt.Errorf("category not found")
+	}
+	if err != nil {
+		return fmt.Errorf("error update category: %w", err)
+	}
+
+	return nil
 }
+
 
 func (p *categoryRepo) DeleteById(id int) error {
 	query := `DELETE FROM category WHERE id=$1;`

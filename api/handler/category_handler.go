@@ -81,6 +81,7 @@ func (c *categoryHandler) UpdateById(h *gin.Context) {
 			h.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
 			})
+			return
 	}
 
 	h.JSON(http.StatusOK, gin.H{

@@ -11,9 +11,16 @@ import (
 
 
 func Router(db *sql.DB) *gin.Engine{
+	//category
 	categoryRepo := repository.NewcategoryRepository(db)
 	categoryService:= services.NewcategoryService(categoryRepo)
 	categoryHandler := handler.NewCategoryHandler(categoryService)
+
+	//Product
+	productRepo := repository.NewProductRepository(db)
+	productService := services.NewProductService(productRepo)
+	productHandler := handler.NewProductHandler(productService)
+
 
 	r := gin.Default()
 
@@ -24,6 +31,15 @@ func Router(db *sql.DB) *gin.Engine{
 		categoryRouter.PUT("/:ID", categoryHandler.UpdateById)
 		categoryRouter.GET("/:ID", categoryHandler.GetById)
 		categoryRouter.DELETE("/:ID", categoryHandler.DeleteById)
+	}
+
+	productRouter := r.Group("/products") 
+	{
+		productRouter.POST("/", productHandler.Create)
+		productRouter.GET("/", productHandler.GetAll)
+		productRouter.PUT("/:ID", productHandler.UpdateById)
+		productRouter.GET("/:ID", productHandler.GetById)
+		productRouter.DELETE("/:ID", productHandler.DeleteById)
 	}
 
 	return r

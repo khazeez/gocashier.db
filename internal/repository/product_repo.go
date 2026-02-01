@@ -51,7 +51,7 @@ func (p *productRepo) Create(product *models.Product) error {
 }
 
 func (p *productRepo) GetAll() ([]models.Product, error) {
-	query := `SELECT category_id, product_name, price, stock, created_at FROM product;`
+	query := `SELECT id, category_id, product_name, price, stock, created_at FROM product;`
 	rows, err := p.db.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error select product: %w", err)
@@ -68,6 +68,7 @@ func (p *productRepo) GetAll() ([]models.Product, error) {
 			&product.Name,
 			&product.Price,
 			&product.Stock,
+			&product.CreatedAt,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("error select product: %w", err)
@@ -84,14 +85,42 @@ func (p *productRepo) GetAll() ([]models.Product, error) {
 }
 
 func (p *productRepo) UpdateById(id int, product *models.Product) error {
-	query := `UPDATE (category_id, product_name, price, stock) SET (category_id=$1, product_name=$2, price=$3, stock=$4) WHERE id=$5 RETURNING id, category_id, product_name, price, stock, created_at`
-	_, err := p.db.Exec(query, product.CategoryId, product.Name, product.Price, product.Stock, product.ID)
+	query := `
+		UPDATE product
+		SET category_id = $1,
+		    product_name = $2,
+		    price        = $3,
+		    stock        = $4
+		WHERE id = $5
+		RETURNING id, category_id, product_name, price, stock, created_at;
+	`
+
+	err := p.db.QueryRow(
+		query,
+		product.CategoryId,
+		product.Name,
+		product.Price,
+		product.Stock,
+		id,
+	).Scan(
+		&product.ID,
+		&product.CategoryId,
+		&product.Name,
+		&product.Price,
+		&product.Stock,
+		&product.CreatedAt,
+	)
+
+	if err == sql.ErrNoRows {
+		return fmt.Errorf("product not found")
+	}
 	if err != nil {
-		return fmt.Errorf("Error update product: %w", err)
+		return fmt.Errorf("error update product: %w", err)
 	}
 
 	return nil
 }
+
 
 func (p *productRepo) DeleteById(id int) error {
 	query := `DELETE FROM product WHERE id=$1;`
@@ -104,7 +133,7 @@ func (p *productRepo) DeleteById(id int) error {
 }
 
 func (p *productRepo) GetById(id int) (*models.Product, error) {
-	query := `SELECT * FROM product WHERE id=$1;`
+	query := `SELECT id, category_id, product_name, price, stock, created_at FROM product WHERE id=$1;`
 	row := p.db.QueryRow(query, id)
 	var product models.Product
 	err := row.Scan(
@@ -113,6 +142,7 @@ func (p *productRepo) GetById(id int) (*models.Product, error) {
 		&product.Name,
 		&product.Price,
 		&product.Stock,
+		&product.CreatedAt,
 	)
 
 	if err != nil {
