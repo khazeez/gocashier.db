@@ -26,18 +26,26 @@ func NewcategoryRepository(db *sql.DB) CategoryRepo {
 }
 
 func (p *categoryRepo) Create(category *models.Category) error {
+	query := `
+		INSERT INTO category (category_name, description)
+		VALUES ($1, $2)
+		RETURNING id, category_name, description;
+	`
 
-	query := `INSERT INTO category (id, category_name, description) VALUES ($1, $2, $3);`
-	_, err := p.db.Exec(query, category.ID, category.Name, category.Description)
-	if err != nil {
-		return fmt.Errorf("error create category: %w", err)
-	}
-	return nil
-
+	return p.db.QueryRow(
+		query,
+		category.Name,
+		category.Description,
+	).Scan(
+		&category.ID,
+		&category.Name,
+		&category.Description,
+	)
 }
 
+
 func (p *categoryRepo) GetAll() ([]models.Category, error) {
-	query := `SELECT * FROM category;`
+	query := `SELECT id, category_name, description, created_at FROM category;`
 	rows, err := p.db.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("error select category: %w", err)
@@ -52,6 +60,7 @@ func (p *categoryRepo) GetAll() ([]models.Category, error) {
 			&category.ID,
 			&category.Name,
 			&category.Description,
+			&category.CreatedAt,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("error select category: %w", err)
@@ -63,32 +72,50 @@ func (p *categoryRepo) GetAll() ([]models.Category, error) {
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
-	return categories, err
+	return categories, nil
 
 }
 
 func (p *categoryRepo) UpdateById(id int, category *models.Category) error {
-	query := `UPDATE (category_name, description) SET (category_name=$1, description=$2) WHERE id=$3`
+	query := `UPDATE (category_name, description) SET (category_name=$1, description=$2) WHERE id=$3 RETURNING id, category_name, description;`
 	_, err := p.db.Exec(query, category.Name, category.Description, category.ID)
 	if err != nil {
 		return fmt.Errorf("Error update category: %w", err)
 	}
 
-	return nil
+	return p.db.QueryRow(
+		query,
+		category.Name,
+		category.Description,
+	).Scan(
+		&category.ID,
+		&category.Name,
+		&category.Description,
+	)
+
 }
 
 func (p *categoryRepo) DeleteById(id int) error {
 	query := `DELETE FROM category WHERE id=$1;`
-	_, err := p.db.Exec(query, id)
+	result, err := p.db.Exec(query, id)
 	if err != nil {
 		return fmt.Errorf("Error delete category: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("error get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return sql.ErrNoRows
 	}
 
 	return nil
 }
 
 func (p *categoryRepo) GetById(id int) (*models.Category, error) {
-	query := `SELECT * FROM category WHERE id=$1;`
+	query := `SELECT id, category_name, description FROM category WHERE id=$1;`
 	row := p.db.QueryRow(query, id)
 	var category models.Category
 	err := row.Scan(

@@ -4,31 +4,28 @@ import (
 	"database/sql"
 	"log"
 
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"gocashier.db/pkg"
 )
 
 func InitDb() (*sql.DB, error) {
-	var psqlinfo = pkg.Load().DBURL
-
-	db, err := sql.Open("postgress", psqlinfo)
+	dsn:= pkg.Load().DBURL
+	db, err := sql.Open("pgx", dsn)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	err = db.Ping()
-	if err != nil {
-		log.Fatal(err)
-	} else {
-		log.Println("Success connect to database")
+	
+	if err := db.Ping(); err != nil {
+		return nil, err
 	}
 
+	log.Println("success connect to database")
 	return db, nil
-
 }
 
 func CloseDb(db *sql.DB) {
-	err := db.Close()
-	if err != nil {
-		log.Fatal(err)
+	if err := db.Close(); err != nil {
+		log.Println("error closing database:", err)
 	}
 }
