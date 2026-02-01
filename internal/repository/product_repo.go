@@ -162,21 +162,43 @@ func (p *productRepo) GetById(id int) (*models.Product, error) {
 }
 
 func (p *productRepo) GetDetailProductById(id int) (*models.ProductDetail, error) {
-	query := `SELECT p.id, p.product_name, p.price, p.stock, p.created_at c.category_name, c.description FROM product p INNER JOIN category c ON p.category_id = c.id WHERE p.id=$1`
+	query := `
+SELECT
+    p.id,
+    p.product_name,
+    p.price,
+    p.stock,
+    p.created_at,
+    c.id,
+    c.category_name,
+    c.description,
+    c.created_at
+FROM product p
+INNER JOIN category c ON p.category_id = c.id
+WHERE p.id = $1
+`
+
+
 	row := p.db.QueryRow(query, id)
+
 	var product models.ProductDetail
+
 	err := row.Scan(
-&product.ID,
-		&product.Name,
-		&product.Price,
-		&product.Stock,
-		&product.Category.Name,
-		&product.Category.Description,
-	)
+    &product.ID,
+    &product.Name,
+    &product.Price,
+    &product.Stock,
+    &product.CreatedAt,
+    &product.Category.ID,
+    &product.Category.Name,
+    &product.Category.Description,
+    &product.Category.CreatedAt,
+)
+
 	if err != nil {
-		return nil, fmt.Errorf("Error get detail product: %w", err)
+		return nil, fmt.Errorf("error get detail product: %w", err)
 	}
 
-	return  &product, nil
-
+	return &product, nil
 }
+

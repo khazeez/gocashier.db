@@ -126,3 +126,23 @@ func (c *productHandler) GetById(h *gin.Context) {
 	})
 }
 
+func (c *productHandler) GetDetailProductById(h *gin.Context) {
+id, err := strconv.Atoi(h.Param("ID"))
+	if err != nil {
+		h.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+		return
+	}
+
+	data, err := c.productService.GetDetailProductById(id)
+	if err != nil {
+		h.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	h.JSON(http.StatusOK, gin.H{
+		"succsess": true,
+		"data": data,
+	})
+
+}
+

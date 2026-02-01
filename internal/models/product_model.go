@@ -16,5 +16,6 @@ type ProductDetail struct {
 	Name     string   `json:"name"`
 	Price    float64      `json:"price"`
 	Stock    int      `json:"stock"`
+	CreatedAt  time.Time `json:"created_at"`
 	Category Category `json:"category"`
 }

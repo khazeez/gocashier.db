@@ -40,6 +40,7 @@ func Router(db *sql.DB) *gin.Engine{
 		productRouter.PUT("/:ID", productHandler.UpdateById)
 		productRouter.GET("/:ID", productHandler.GetById)
 		productRouter.DELETE("/:ID", productHandler.DeleteById)
+		productRouter.GET("/:ID/detail", productHandler.GetDetailProductById)
 	}
 
 	return r
