@@ -9,7 +9,7 @@ type TransactionService struct {
 	transactionRepo repository.TransactionRepository
 }
 
-func NewTransactionRepository(transactionRepo repository.TransactionRepository) TransactionService {
+func NewTransactionService(transactionRepo repository.TransactionRepository) TransactionService {
 	return TransactionService{
 		transactionRepo: transactionRepo,
 	}

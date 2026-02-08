@@ -21,6 +21,11 @@ func Router(db *sql.DB) *gin.Engine{
 	productService := services.NewProductService(productRepo)
 	productHandler := handler.NewProductHandler(productService)
 
+	//Transaction
+	transactionRepo := repository.NewTransactionRepository(db)
+	transactionService := services.NewTransactionService(transactionRepo)
+	transactionHandler := handler.NewTransactionHandler(transactionService)
+
 
 	r := gin.Default()
 
@@ -42,6 +47,12 @@ func Router(db *sql.DB) *gin.Engine{
 		productRouter.DELETE("/:ID", productHandler.DeleteById)
 		productRouter.GET("/:ID/detail", productHandler.GetDetailProductById)
 	}
+
+	transactionRouter := r.Group("transaction")
+	{
+		transactionRouter.POST("/checkout", transactionHandler.CreateTransaction)
+	}
+
 
 	return r
 
