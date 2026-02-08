@@ -5,17 +5,17 @@ import (
 	"gocashier.db/internal/repository"
 )
 
-type transactionService struct {
+type TransactionService struct {
 	transactionRepo repository.TransactionRepository
 }
 
-func NewTransactionRepository(transactionRepo repository.TransactionRepository) transactionService {
-	return transactionService{
+func NewTransactionRepository(transactionRepo repository.TransactionRepository) TransactionService {
+	return TransactionService{
 		transactionRepo: transactionRepo,
 	}
 }
 
 
-func (t *transactionService) CreateTransaction(items []models.CheckoutItem) (*models.Transaction, error) {
+func (t *TransactionService) CreateTransaction(items []models.CheckoutItem) (*models.Transaction, error) {
 		return t.transactionRepo.CreateTransaction(items)
 }
