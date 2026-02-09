@@ -20,6 +20,6 @@ func (t *TransactionService) CreateTransaction(items []models.CheckoutItem) (*mo
 }
 
 
-func (t *TransactionService) GetReportToday() (error, *models.TransactionReport) {
+func (t *TransactionService) GetReportToday() (*models.TransactionReport, error) {
 	return t.transactionRepo.GetReportToday()
 }

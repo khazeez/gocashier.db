@@ -80,65 +80,47 @@ func (repo *TransactionRepository) CreateTransaction(items []models.CheckoutItem
 }
 
 
-func (t *TransactionRepository) GetReportToday() (error, *models.TransactionReport) {
-  query := `SELECT SUM(total_amount) AS total_revenue, COUNT(id) AS total_transaction from transaction WHERE created_at >= CURRENT_DATE AND created_at < CURRENT_DATE + INTERVAL '1 day'`
-  rows, err := t.db.Query(query)
-  if err != nil {
-	return fmt.Errorf("Error get product: %w", err), nil
-  }
+func (t *TransactionRepository) GetReportToday() (*models.TransactionReport, error) {
 
-  var product models.TransactionReport
-  err = rows.Scan(
-	&product.TotalRevenue,
-	&product.TotalTransaction,
-  )
+	// total revenue & transaction count
+	query := `
+		SELECT 
+			COALESCE(SUM(total_amount), 0),
+			COUNT(id)
+		FROM "transaction"
+		WHERE created_at >= CURRENT_DATE
+		  AND created_at < CURRENT_DATE + INTERVAL '1 day'
+	`
 
-
-	query = `SELECT id from transaction WHERE created_at >= CURRENT_DATE AND created_at < CURRENT_DATE + INTERVAL '1 day'`
-	rows, err = t.db.Query(query)
-	if err != nil {
-		return fmt.Errorf("Error get product: %w", err), nil
+	var report models.TransactionReport
+	row := t.db.QueryRow(query)
+	if err := row.Scan(&report.TotalRevenue, &report.TotalTransaction); err != nil {
+		return nil, err
 	}
 
-	var items []int
-	for rows.Next() {
-		var item int
-		err = rows.Scan(&item)
-		if err != nil {
-			return fmt.Errorf("Error get product: %w", err), nil
-		}
+	// best selling product
+	query = `
+		SELECT 
+			p.name,
+			SUM(td.quantity) AS total_sold
+		FROM transaction_detail td
+		JOIN "transaction" t ON t.id = td.transaction_id
+		JOIN product p ON p.id = td.product_id
+		WHERE t.created_at >= CURRENT_DATE
+		  AND t.created_at < CURRENT_DATE + INTERVAL '1 day'
+		GROUP BY p.id, p.name
+		ORDER BY total_sold DESC
+		LIMIT 1
+	`
 
-		items = append(items, item)
-	}
-
-	freq:= make(map[int]int)
-	for _, val := range items {
-		freq[val]++
-	}
-
-	maxCount := 0
-	mostFrequent := 0
-	for key, count := range freq {
-		if count > maxCount {
-			maxCount = count
-			mostFrequent = key
-		}
-	}
-
-	query = `SELECT product_name from product WHERE id=$1`
-	var product2 models.Product
-	row := t.db.QueryRow(query, mostFrequent)
-	err = row.Scan(
-		&product2.Name,
+	row = t.db.QueryRow(query)
+	err := row.Scan(
+		&report.BestSellingProduct.Name,
+		&report.BestSellingProduct.QuantitySelled,
 	)
-
-	fmt.Println("Elemen terbanyak:", mostFrequent, "dengan jumlah:", maxCount)
-
-
-	return nil, &models.TransactionReport{
-			TotalRevenue: product.TotalRevenue,
-			TotalTransaction: product.TotalTransaction,
-			BestSellingProduct: models.BestSellingProduct{Name: product2.Name, QuantitySelled: maxCount},
+	if err != nil && err != sql.ErrNoRows {
+		return nil, err
 	}
 
+	return &report, nil
 }

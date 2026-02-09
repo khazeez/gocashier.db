@@ -51,7 +51,7 @@ func Router(db *sql.DB) *gin.Engine {
 		transactionRouter := apiRouter.Group("transaction")
 		{
 			transactionRouter.POST("/checkout", transactionHandler.CreateTransaction)
-			transactionRouter.GET("//report/hari-ini", transactionHandler.GetReportToday)
+			transactionRouter.GET("/report/today", transactionHandler.GetReportToday)
 		}
 	}
 

@@ -44,7 +44,7 @@ func (t *transactionHandler) CreateTransaction(h *gin.Context) {
 }
 
 func (t *transactionHandler) GetReportToday(h *gin.Context) {
-	err, data := t.transactionService.GetReportToday()
+	data, err := t.transactionService.GetReportToday()
 	if err != nil {
 		h.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
