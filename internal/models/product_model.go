@@ -19,3 +19,9 @@ type ProductDetail struct {
 	CreatedAt time.Time `json:"created_at"`
 	Category  Category  `json:"category"`
 }
+
+type BestSellingProduct struct {
+	Name string `json:"name"`
+	QuantitySelled int `json:"qty_selled"`
+
+}

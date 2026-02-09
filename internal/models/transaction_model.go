@@ -28,9 +28,10 @@ type CheckoutRequest struct {
 }
 
 
+
 type TransactionReport struct {
 	TotalRevenue int `json:"total_revenue"`
 	TotalTransaction int `json:"total_transaction"`
-	BestSellingProduct TransactionDetail
+	BestSellingProduct BestSellingProduct `json:"best_selling_product"`
 
 }

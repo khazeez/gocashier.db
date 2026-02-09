@@ -80,6 +80,65 @@ func (repo *TransactionRepository) CreateTransaction(items []models.CheckoutItem
 }
 
 
-func (t *TransactionRepository) GetReportToday() {
-	
+func (t *TransactionRepository) GetReportToday() (error, *models.TransactionReport) {
+  query := `SELECT SUM(total_amount) AS total_revenue, COUNT(id) AS total_transaction from transaction WHERE created_at >= CURRENT_DATE AND created_at < CURRENT_DATE + INTERVAL '1 day'`
+  rows, err := t.db.Query(query)
+  if err != nil {
+	return fmt.Errorf(err.Error()), nil
+  }
+
+  var product models.TransactionReport
+  err = rows.Scan(
+	&product.TotalRevenue,
+	&product.TotalTransaction,
+  )
+
+
+	query = `SELECT id from transaction WHERE created_at >= CURRENT_DATE AND created_at < CURRENT_DATE + INTERVAL '1 day'`
+	rows, err = t.db.Query(query)
+	if err != nil {
+		return fmt.Errorf(err.Error()), nil
+	}
+
+	var items []int
+	for rows.Next() {
+		var item int
+		err = rows.Scan(&item)
+		if err != nil {
+			return fmt.Errorf(err.Error()), nil
+		}
+
+		items = append(items, item)
+	}
+
+	freq:= make(map[int]int)
+	for _, val := range items {
+		freq[val]++
+	}
+
+	maxCount := 0
+	mostFrequent := 0
+	for key, count := range freq {
+		if count > maxCount {
+			maxCount = count
+			mostFrequent = key
+		}
+	}
+
+	query = `SELECT product_name from product WHERE id=$1`
+	var product2 models.Product
+	row := t.db.QueryRow(query, mostFrequent)
+	err = row.Scan(
+		&product2.Name,
+	)
+
+	fmt.Println("Elemen terbanyak:", mostFrequent, "dengan jumlah:", maxCount)
+
+
+	return nil, &models.TransactionReport{
+			TotalRevenue: product.TotalRevenue,
+			TotalTransaction: product.TotalTransaction,
+			BestSellingProduct: models.BestSellingProduct{Name: product2.Name, QuantitySelled: maxCount},
+	}
+
 }
