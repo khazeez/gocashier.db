@@ -101,14 +101,14 @@ func (t *TransactionRepository) GetReportToday() (*models.TransactionReport, err
 	// best selling product
 	query = `
 		SELECT 
-			p.name,
+			p.product_name,
 			SUM(td.quantity) AS total_sold
-		FROM transaction_detail td
+		FROM transaction_details td
 		JOIN "transaction" t ON t.id = td.transaction_id
 		JOIN product p ON p.id = td.product_id
 		WHERE t.created_at >= CURRENT_DATE
 		  AND t.created_at < CURRENT_DATE + INTERVAL '1 day'
-		GROUP BY p.id, p.name
+		GROUP BY p.id, p.product_name
 		ORDER BY total_sold DESC
 		LIMIT 1
 	`
