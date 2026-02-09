@@ -143,18 +143,19 @@ func (t *TransactionRepository) GetReportWithRange(startDate time.Time, endDate 
 	}
 
 	query = `
-		SELECT 
-			p.product_name,
-			SUM(td.quantity) AS total_sold
-		FROM transaction_details td
-		JOIN "transaction" t ON t.id = td.transaction_id
-		JOIN product p ON p.id = td.product_id
-		WHERE t.created_at >= $1
-		  AND t.created_at < $2
-		GROUP BY p.id, p.product_name
-		ORDER BY total_sold DESC
-		LIMIT 1
-	`
+	SELECT 
+		p.product_name,
+		COALESCE(SUM(td.quantity), 0) AS total_sold
+	FROM transaction_details td
+	JOIN "transaction" t ON t.id = td.transaction_id
+	JOIN product p ON p.id = td.product_id
+	WHERE t.created_at >= $1
+	  AND t.created_at <  $2
+	GROUP BY p.id, p.product_name
+	ORDER BY total_sold DESC
+	LIMIT 1
+`
+
 
 	row = t.db.QueryRow(query, startDate, endDate)
 	err := row.Scan(
