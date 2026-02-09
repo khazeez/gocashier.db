@@ -97,7 +97,7 @@ func (t *TransactionRepository) GetReportToday() (error, *models.TransactionRepo
 	query = `SELECT id from transaction WHERE created_at >= CURRENT_DATE AND created_at < CURRENT_DATE + INTERVAL '1 day'`
 	rows, err = t.db.Query(query)
 	if err != nil {
-		return fmt.Errorf(err.Error()), nil
+		return fmt.Errorf("Error get product: %w", err), nil
 	}
 
 	var items []int
