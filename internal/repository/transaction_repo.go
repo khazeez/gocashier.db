@@ -82,7 +82,6 @@ func (repo *TransactionRepository) CreateTransaction(items []models.CheckoutItem
 
 func (t *TransactionRepository) GetReportToday() (*models.TransactionReport, error) {
 
-	// total revenue & transaction count
 	query := `
 		SELECT 
 			COALESCE(SUM(total_amount), 0),
@@ -98,7 +97,6 @@ func (t *TransactionRepository) GetReportToday() (*models.TransactionReport, err
 		return nil, err
 	}
 
-	// best selling product
 	query = `
 		SELECT 
 			p.product_name,
