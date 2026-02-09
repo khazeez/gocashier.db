@@ -84,7 +84,7 @@ func (t *TransactionRepository) GetReportToday() (error, *models.TransactionRepo
   query := `SELECT SUM(total_amount) AS total_revenue, COUNT(id) AS total_transaction from transaction WHERE created_at >= CURRENT_DATE AND created_at < CURRENT_DATE + INTERVAL '1 day'`
   rows, err := t.db.Query(query)
   if err != nil {
-	return fmt.Errorf(err.Error()), nil
+	return fmt.Errorf("Error get product: %w", err), nil
   }
 
   var product models.TransactionReport
@@ -105,7 +105,7 @@ func (t *TransactionRepository) GetReportToday() (error, *models.TransactionRepo
 		var item int
 		err = rows.Scan(&item)
 		if err != nil {
-			return fmt.Errorf(err.Error()), nil
+			return fmt.Errorf("Error get product: %w", err), nil
 		}
 
 		items = append(items, item)
