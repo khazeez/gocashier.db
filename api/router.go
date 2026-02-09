@@ -52,6 +52,7 @@ func Router(db *sql.DB) *gin.Engine {
 		{
 			transactionRouter.POST("/checkout", transactionHandler.CreateTransaction)
 			transactionRouter.GET("/report/today", transactionHandler.GetReportToday)
+			transactionRouter.GET("/report")
 		}
 	}
 
