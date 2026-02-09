@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
 	"gocashier.db/internal/models"
 )
@@ -112,6 +113,50 @@ func (t *TransactionRepository) GetReportToday() (*models.TransactionReport, err
 	`
 
 	row = t.db.QueryRow(query)
+	err := row.Scan(
+		&report.BestSellingProduct.Name,
+		&report.BestSellingProduct.QuantitySelled,
+	)
+	if err != nil && err != sql.ErrNoRows {
+		return nil, err
+	}
+
+	return &report, nil
+}
+
+
+func (t *TransactionRepository) GetReportWithRange(startDate time.Time, endDate time.Time) (*models.TransactionReport, error) {
+
+	query := `
+		SELECT 
+			COALESCE(SUM(total_amount), 0),
+			COUNT(id)
+		FROM "transaction"
+		WHERE created_at >= $1
+  AND created_at <  $2;
+	`
+
+	var report models.TransactionReport
+	row := t.db.QueryRow(query, startDate, endDate)
+	if err := row.Scan(&report.TotalRevenue, &report.TotalTransaction); err != nil {
+		return nil, err
+	}
+
+	query = `
+		SELECT 
+			p.product_name,
+			SUM(td.quantity) AS total_sold
+		FROM transaction_details td
+		JOIN "transaction" t ON t.id = td.transaction_id
+		JOIN product p ON p.id = td.product_id
+		WHERE t.created_at >= $1
+		  AND t.created_at < $2
+		GROUP BY p.id, p.product_name
+		ORDER BY total_sold DESC
+		LIMIT 1
+	`
+
+	row = t.db.QueryRow(query, startDate, endDate)
 	err := row.Scan(
 		&report.BestSellingProduct.Name,
 		&report.BestSellingProduct.QuantitySelled,

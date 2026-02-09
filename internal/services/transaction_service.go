@@ -1,6 +1,8 @@
 package services
 
 import (
+	"time"
+
 	"gocashier.db/internal/models"
 	"gocashier.db/internal/repository"
 )
@@ -22,4 +24,8 @@ func (t *TransactionService) CreateTransaction(items []models.CheckoutItem) (*mo
 
 func (t *TransactionService) GetReportToday() (*models.TransactionReport, error) {
 	return t.transactionRepo.GetReportToday()
+}
+
+func (t *TransactionService) GetReportWithRange(startDate time.Time, endDate time.Time) (*models.TransactionReport, error) {
+	return t.transactionRepo.GetReportWithRange(startDate, endDate)
 }
