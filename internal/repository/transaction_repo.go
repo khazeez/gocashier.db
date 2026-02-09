@@ -78,3 +78,8 @@ func (repo *TransactionRepository) CreateTransaction(items []models.CheckoutItem
 		Details:     details,
 	}, nil
 }
+
+
+func (t *TransactionRepository) GetReportToday() {
+	
+}
