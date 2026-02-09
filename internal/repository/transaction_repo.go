@@ -11,10 +11,9 @@ type TransactionRepository struct {
 	db *sql.DB
 }
 
-func NewTransactionRepository (db *sql.DB) TransactionRepository {
+func NewTransactionRepository(db *sql.DB) TransactionRepository {
 	return TransactionRepository{db: db}
 }
-
 
 func (repo *TransactionRepository) CreateTransaction(items []models.CheckoutItem) (*models.Transaction, error) {
 	tx, err := repo.db.Begin()
@@ -37,7 +36,7 @@ func (repo *TransactionRepository) CreateTransaction(items []models.CheckoutItem
 		if err != nil {
 			return nil, err
 		}
-  
+
 		subtotal := productPrice * item.Quantity
 		totalAmount += subtotal
 

@@ -9,13 +9,12 @@ import (
 )
 
 func InitDb() (*sql.DB, error) {
-	dsn:= pkg.Load().DBURL
+	dsn := pkg.Load().DBURL
 	db, err := sql.Open("pgx", dsn)
 	if err != nil {
 		return nil, err
 	}
 
-	
 	if err := db.Ping(); err != nil {
 		return nil, err
 	}

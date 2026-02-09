@@ -40,9 +40,8 @@ func (c *productHandler) Create(h *gin.Context) {
 
 	h.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"data": product,
+		"data":    product,
 	})
-
 
 }
 
@@ -58,10 +57,9 @@ func (c *productHandler) GetAll(h *gin.Context) {
 
 	h.JSON(http.StatusOK, gin.H{
 		"succsess": true,
-		"data": data,
+		"data":     data,
 	})
 
-	
 }
 
 func (c *productHandler) UpdateById(h *gin.Context) {
@@ -77,7 +75,7 @@ func (c *productHandler) UpdateById(h *gin.Context) {
 			"error": "invalid request payload",
 		})
 		return
-		
+
 	}
 
 	if err = c.productService.UpdateById(id, &product); err != nil {
@@ -87,7 +85,7 @@ func (c *productHandler) UpdateById(h *gin.Context) {
 
 	h.JSON(http.StatusOK, gin.H{
 		"succsess": true,
-		"data": product,
+		"data":     product,
 	})
 }
 
@@ -104,7 +102,7 @@ func (c *productHandler) DeleteById(h *gin.Context) {
 	}
 	h.JSON(http.StatusOK, gin.H{
 		"succsess": true,
-		"message": "Success delete data",
+		"message":  "Success delete data",
 	})
 }
 
@@ -122,12 +120,12 @@ func (c *productHandler) GetById(h *gin.Context) {
 
 	h.JSON(http.StatusOK, gin.H{
 		"succsess": true,
-		"data": data,
+		"data":     data,
 	})
 }
 
 func (c *productHandler) GetDetailProductById(h *gin.Context) {
-id, err := strconv.Atoi(h.Param("ID"))
+	id, err := strconv.Atoi(h.Param("ID"))
 	if err != nil {
 		h.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
 		return
@@ -141,8 +139,7 @@ id, err := strconv.Atoi(h.Param("ID"))
 
 	h.JSON(http.StatusOK, gin.H{
 		"succsess": true,
-		"data": data,
+		"data":     data,
 	})
 
 }
-

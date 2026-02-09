@@ -24,5 +24,5 @@ type CheckoutItem struct {
 }
 
 type CheckoutRequest struct {
-	Items   []CheckoutItem `json:"items"`
+	Items []CheckoutItem `json:"items"`
 }

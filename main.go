@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-if err := server.RunServer(); err != nil {
-	log.Fatalf("Error running the server : %s", err)
-}
+	if err := server.RunServer(); err != nil {
+		log.Fatalf("Error running the server : %s", err)
+	}
 }

@@ -33,7 +33,7 @@ func (p productService) GetAll() ([]models.Product, error) {
 }
 
 func (p productService) UpdateById(id int, product *models.Product) error {
-	return  p.productRepo.UpdateById(id, product)
+	return p.productRepo.UpdateById(id, product)
 }
 
 func (p productService) DeleteById(id int) error {

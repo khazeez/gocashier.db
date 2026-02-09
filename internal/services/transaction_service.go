@@ -15,7 +15,6 @@ func NewTransactionService(transactionRepo repository.TransactionRepository) Tra
 	}
 }
 
-
 func (t *TransactionService) CreateTransaction(items []models.CheckoutItem) (*models.Transaction, error) {
-		return t.transactionRepo.CreateTransaction(items)
+	return t.transactionRepo.CreateTransaction(items)
 }

@@ -38,7 +38,7 @@ func (t *transactionHandler) CreateTransaction(h *gin.Context) {
 
 	h.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"data": data,
+		"data":    data,
 	})
 
 }

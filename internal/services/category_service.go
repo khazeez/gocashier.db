@@ -5,7 +5,6 @@ import (
 	"gocashier.db/internal/repository"
 )
 
-
 type categoryService struct {
 	categoryRepo repository.CategoryRepo
 }

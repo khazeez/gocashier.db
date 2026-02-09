@@ -29,12 +29,12 @@ func NewProductRepository(db *sql.DB) ProductRepo {
 func (p *productRepo) Create(product *models.Product) error {
 
 	query := `INSERT INTO product (category_id, product_name, price, stock) VALUES ($1, $2, $3, $4) RETURNING category_id, product_name, price, stock, created_at;`
-	
+
 	err := p.db.QueryRow(
-		query, 
-		product.CategoryId, 
-		product.Name, 
-		product.Price, 
+		query,
+		product.CategoryId,
+		product.Name,
+		product.Price,
 		product.Stock,
 	).Scan(
 		&product.ID,
@@ -43,7 +43,7 @@ func (p *productRepo) Create(product *models.Product) error {
 		&product.Stock,
 		&product.CreatedAt,
 	)
-	
+
 	if err != nil {
 		return fmt.Errorf("error create product: %w", err)
 	}
@@ -121,7 +121,6 @@ func (p *productRepo) UpdateById(id int, product *models.Product) error {
 	return nil
 }
 
-
 func (p *productRepo) DeleteById(id int) error {
 	query := `DELETE FROM product WHERE id=$1;`
 	result, err := p.db.Exec(query, id)
@@ -178,22 +177,21 @@ INNER JOIN category c ON p.category_id = c.id
 WHERE p.id = $1
 `
 
-
 	row := p.db.QueryRow(query, id)
 
 	var product models.ProductDetail
 
 	err := row.Scan(
-    &product.ID,
-    &product.Name,
-    &product.Price,
-    &product.Stock,
-    &product.CreatedAt,
-    &product.Category.ID,
-    &product.Category.Name,
-    &product.Category.Description,
-    &product.Category.CreatedAt,
-)
+		&product.ID,
+		&product.Name,
+		&product.Price,
+		&product.Stock,
+		&product.CreatedAt,
+		&product.Category.ID,
+		&product.Category.Name,
+		&product.Category.Description,
+		&product.Category.CreatedAt,
+	)
 
 	if err != nil {
 		return nil, fmt.Errorf("error get detail product: %w", err)
@@ -201,4 +199,3 @@ WHERE p.id = $1
 
 	return &product, nil
 }
-

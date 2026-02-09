@@ -46,7 +46,6 @@ func (c *categoryHandler) Create(h *gin.Context) {
 	})
 }
 
-
 func (c *categoryHandler) GetAll(h *gin.Context) {
 	data, err := c.categoryService.GetAll()
 	if err != nil {
@@ -58,7 +57,7 @@ func (c *categoryHandler) GetAll(h *gin.Context) {
 
 	h.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"data": data,
+		"data":    data,
 	})
 }
 
@@ -74,21 +73,21 @@ func (c *categoryHandler) UpdateById(h *gin.Context) {
 			"error": "invalid request payload",
 		})
 		return
-		
+
 	}
 
 	if err := c.categoryService.UpdateById(id, &category); err != nil {
-			h.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
+		h.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
 	}
 
 	h.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"data": category,
+		"data":    category,
 	})
-	
+
 }
 
 func (c *categoryHandler) DeleteById(h *gin.Context) {
@@ -108,7 +107,7 @@ func (c *categoryHandler) DeleteById(h *gin.Context) {
 		"success": true,
 		"message": "Succsess delete data",
 	})
-	
+
 }
 
 func (c *categoryHandler) GetById(h *gin.Context) {
@@ -128,6 +127,6 @@ func (c *categoryHandler) GetById(h *gin.Context) {
 
 	h.JSON(http.StatusOK, gin.H{
 		"success": true,
-		"data": data,
+		"data":    data,
 	})
 }

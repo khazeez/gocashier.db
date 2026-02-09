@@ -43,7 +43,6 @@ func (p *categoryRepo) Create(category *models.Category) error {
 	)
 }
 
-
 func (p *categoryRepo) GetAll() ([]models.Category, error) {
 	query := `SELECT id, category_name, description, created_at FROM category;`
 	rows, err := p.db.Query(query)
@@ -105,7 +104,6 @@ func (p *categoryRepo) UpdateById(id int, category *models.Category) error {
 
 	return nil
 }
-
 
 func (p *categoryRepo) DeleteById(id int) error {
 	query := `DELETE FROM category WHERE id=$1;`

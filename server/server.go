@@ -16,7 +16,6 @@ func RunServer() error {
 
 	defer config.CloseDb(db)
 
-
 	router := api.Router(db)
 
 	serverAddress := pkg.Load().AppPort
@@ -26,5 +25,5 @@ func RunServer() error {
 		return err
 	}
 
-	return  nil
+	return nil
 }
