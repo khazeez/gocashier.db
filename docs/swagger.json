@@ -1,130 +1,156 @@
 {
-  "swagger": "3.0",
+  "openapi": "3.0.1",
   "info": {
-    "description": "API for GoCashier",
     "title": "GoCashier API",
+    "description": "API for GoCashier",
     "contact": {},
     "version": "1.0"
   },
-  "host": "localhost:8080",
-  "basePath": "/api",
+  "servers": [
+    {
+      "url": "http://localhost:8080/api"
+    }
+  ],
   "paths": {
     "/categories": {
       "get": {
-        "produces": ["application/json"],
         "tags": ["categories"],
         "summary": "Get all categories",
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/models.Category"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/models.Category"
+                  }
+                }
               }
             }
           }
         }
       },
       "post": {
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
         "tags": ["categories"],
         "summary": "Create new category",
-        "parameters": [
-          {
-            "description": "Category Data",
-            "name": "category",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/models.Category"
+        "requestBody": {
+          "description": "Category Data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.Category"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "201": {
             "description": "Created",
-            "schema": {
-              "$ref": "#/definitions/models.Category"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Category"
+                }
+              }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name": "category"
       }
     },
     "/categories/{ID}": {
       "get": {
-        "produces": ["application/json"],
         "tags": ["categories"],
         "summary": "Get category by ID",
         "parameters": [
           {
-            "type": "integer",
-            "description": "Category ID",
             "name": "ID",
             "in": "path",
-            "required": true
+            "description": "Category ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/models.Category"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Category"
+                }
+              }
             }
           }
         }
       },
       "put": {
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
         "tags": ["categories"],
         "summary": "Update category by ID",
         "parameters": [
           {
-            "type": "integer",
-            "description": "Category ID",
             "name": "ID",
             "in": "path",
-            "required": true
-          },
-          {
-            "description": "Category Data",
-            "name": "category",
-            "in": "body",
+            "description": "Category ID",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/models.Category"
+              "type": "integer"
             }
           }
         ],
+        "requestBody": {
+          "description": "Category Data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.Category"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/models.Category"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Category"
+                }
+              }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name": "category"
       },
       "delete": {
-        "produces": ["application/json"],
         "tags": ["categories"],
         "summary": "Delete category by ID",
         "parameters": [
           {
-            "type": "integer",
-            "description": "Category ID",
             "name": "ID",
             "in": "path",
-            "required": true
+            "description": "Category ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "Success delete data",
-            "schema": {
-              "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
           }
         }
@@ -132,120 +158,143 @@
     },
     "/products": {
       "get": {
-        "produces": ["application/json"],
         "tags": ["products"],
         "summary": "Get all products",
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/models.Product"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/models.Product"
+                  }
+                }
               }
             }
           }
         }
       },
       "post": {
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
         "tags": ["products"],
         "summary": "Create product",
-        "parameters": [
-          {
-            "description": "Product Data",
-            "name": "product",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/models.Product"
+        "requestBody": {
+          "description": "Product Data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.Product"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/models.Product"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Product"
+                }
+              }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name": "product"
       }
     },
     "/products/{ID}": {
       "get": {
-        "produces": ["application/json"],
         "tags": ["products"],
         "summary": "Get product by ID",
         "parameters": [
           {
-            "type": "integer",
-            "description": "Product ID",
             "name": "ID",
             "in": "path",
-            "required": true
+            "description": "Product ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/models.Product"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Product"
+                }
+              }
             }
           }
         }
       },
       "put": {
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
         "tags": ["products"],
         "summary": "Update product by ID",
         "parameters": [
           {
-            "type": "integer",
-            "description": "Product ID",
             "name": "ID",
             "in": "path",
-            "required": true
-          },
-          {
-            "description": "Product Data",
-            "name": "product",
-            "in": "body",
+            "description": "Product ID",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/models.Product"
+              "type": "integer"
             }
           }
         ],
+        "requestBody": {
+          "description": "Product Data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.Product"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/models.Product"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Product"
+                }
+              }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name": "product"
       },
       "delete": {
-        "produces": ["application/json"],
         "tags": ["products"],
         "summary": "Delete product by ID",
         "parameters": [
           {
-            "type": "integer",
-            "description": "Product ID",
             "name": "ID",
             "in": "path",
-            "required": true
+            "description": "Product ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "Success delete data",
-            "schema": {
-              "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
           }
         }
@@ -253,23 +302,28 @@
     },
     "/products/{ID}/detail": {
       "get": {
-        "produces": ["application/json"],
         "tags": ["products"],
         "summary": "Get detail product by ID",
         "parameters": [
           {
-            "type": "integer",
-            "description": "Product ID",
             "name": "ID",
             "in": "path",
-            "required": true
+            "description": "Product ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/models.Product"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/models.Product"
+                }
+              }
             }
           }
         }
@@ -277,61 +331,71 @@
     },
     "/transaction/checkout": {
       "post": {
-        "description": "Create new transaction from items",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
         "tags": ["transactions"],
         "summary": "Checkout transaction",
-        "parameters": [
-          {
-            "description": "Checkout Data",
-            "name": "request",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/models.CheckoutRequest"
+        "description": "Create new transaction from items",
+        "requestBody": {
+          "description": "Checkout Data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/models.CheckoutRequest"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "additionalProperties": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name": "request"
       }
     },
     "/transaction/report": {
       "get": {
-        "description": "Get report between start_date and end_date",
-        "produces": ["application/json"],
         "tags": ["transactions"],
         "summary": "Get transaction report by date range",
+        "description": "Get report between start_date and end_date",
         "parameters": [
           {
-            "type": "string",
-            "description": "Start Date (YYYY-MM-DD)",
             "name": "start_date",
             "in": "query",
-            "required": true
+            "description": "Start Date (YYYY-MM-DD)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           },
           {
-            "type": "string",
-            "description": "End Date (YYYY-MM-DD)",
             "name": "end_date",
             "in": "query",
-            "required": true
+            "description": "End Date (YYYY-MM-DD)",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "additionalProperties": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
             }
           }
         }
@@ -339,84 +403,90 @@
     },
     "/transaction/report/today": {
       "get": {
-        "description": "Get all transactions for today",
-        "produces": ["application/json"],
         "tags": ["transactions"],
         "summary": "Get today's transaction report",
+        "description": "Get all transactions for today",
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "additionalProperties": true
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
             }
           }
         }
       }
     }
   },
-  "definitions": {
-    "models.Category": {
-      "type": "object",
-      "properties": {
-        "created_at": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "id": {
-          "type": "integer"
-        },
-        "name": {
-          "type": "string"
+  "components": {
+    "schemas": {
+      "models.Category": {
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
         }
-      }
-    },
-    "models.CheckoutItem": {
-      "type": "object",
-      "properties": {
-        "product_id": {
-          "type": "integer"
-        },
-        "quantity": {
-          "type": "integer"
+      },
+      "models.CheckoutItem": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "integer"
+          },
+          "quantity": {
+            "type": "integer"
+          }
         }
-      }
-    },
-    "models.CheckoutRequest": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "type": "array",
+      },
+      "models.CheckoutRequest": {
+        "type": "object",
+        "properties": {
           "items": {
-            "$ref": "#/definitions/models.CheckoutItem"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/models.CheckoutItem"
+            }
+          }
+        }
+      },
+      "models.Product": {
+        "type": "object",
+        "properties": {
+          "category_id": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "stock": {
+            "type": "integer"
           }
         }
       }
-    },
-    "models.Product": {
-      "type": "object",
-      "properties": {
-        "category_id": {
-          "type": "integer"
-        },
-        "created_at": {
-          "type": "string"
-        },
-        "id": {
-          "type": "integer"
-        },
-        "name": {
-          "type": "string"
-        },
-        "price": {
-          "type": "number"
-        },
-        "stock": {
-          "type": "integer"
-        }
-      }
     }
-  }
+  },
+  "x-original-swagger-version": "2.0"
 }
