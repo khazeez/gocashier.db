@@ -2,6 +2,10 @@ package api
 
 import (
 	"database/sql"
+	// _ "go-swagger/docs"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/gin-gonic/gin"
 	"gocashier.db/api/handler"
@@ -26,6 +30,8 @@ func Router(db *sql.DB) *gin.Engine {
 	transactionHandler := handler.NewTransactionHandler(transactionService)
 
 	r := gin.Default()
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	apiRouter := r.Group("/api")
 	{
