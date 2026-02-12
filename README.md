@@ -1,82 +1,88 @@
-GoCashier API
+# 🧾 GoCashier API
 
-GoCashier API adalah RESTful API untuk aplikasi kasir sederhana yang
-dibangun dengan Golang, Gin, dan Clean Architecture.
+RESTful API untuk aplikasi kasir (cashier) sederhana yang dibangun dengan **Golang**, **Gin**, dan konsep **Clean Architecture**.
 
-============================== TECH STACK
-============================== - Golang - Gin Web Framework - SQL
-Database (MySQL/PostgreSQL) - Swaggo Swagger - Clean Architecture
+API ini mendukung manajemen kategori, produk, transaksi checkout, serta laporan transaksi dengan dokumentasi otomatis menggunakan Swagger.
 
-============================== FEATURES ============================== -
-Category Management - Product Management - Transaction Checkout -
-Transaction Reports (Daily & Range) - Swagger API Documentation - JSON
-REST API
+---
 
-============================== PROJECT STRUCTURE
-============================== gocashier.db/ - api/ - handler/ -
-router.go - internal/ - models/ - repository/ - services/ - docs/ -
-main.go - go.mod
+# 🚀 Tech Stack
 
-============================== INSTALLATION
-==============================
+- Golang
+- Gin Web Framework
+- SQL Database (MySQL/PostgreSQL)
+- Swaggo Swagger
+- Clean Architecture
 
-1.  Clone Repository git clone
-    https://github.com/yourusername/gocashier.git cd gocashier
+---
 
-2.  Install Dependencies go mod tidy
+# 📦 Features
 
-3.  Setup Database CREATE DATABASE gocashier;
+✅ Category Management  
+✅ Product Management  
+✅ Transaction Checkout  
+✅ Transaction Reports (Daily & Range)  
+✅ Swagger API Documentation  
+✅ Clean Architecture Structure  
+✅ JSON REST API  
 
-4.  Run App go run main.go
+---
 
-Server: http://localhost:8080
+# 📂 Project Structure
 
-============================== SWAGGER DOCS
-==============================
+gocashier.db/
+│
+├── api/
+│ ├── handler/
+│ └── router.go
+│
+├── internal/
+│ ├── models/
+│ ├── repository/
+│ └── services/
+│
+├── docs/ # auto-generated swagger docs
+├── main.go
+├── go.mod
+└── README.md
 
-Generate docs: swag init –parseInternal
 
-Open Swagger UI: http://localhost:8080/swagger/index.html
 
-============================== API ENDPOINTS
-==============================
+---
 
-CATEGORIES POST /api/categories GET /api/categories GET
-/api/categories/{id} PUT /api/categories/{id} DELETE
-/api/categories/{id}
+# ⚙️ Installation
 
-PRODUCTS POST /api/products GET /api/products GET /api/products/{id} PUT
-/api/products/{id} DELETE /api/products/{id} GET
-/api/products/{id}/detail
+## 1️⃣ Clone Repository
 
-TRANSACTIONS POST /api/transaction/checkout GET
-/api/transaction/report/today GET /api/transaction/report
+```bash
+git clone https://github.com/yourusername/gocashier.git
+cd gocashier
 
-============================== EXAMPLE CREATE PRODUCT
-============================== { “name”: “Coffee”, “price”: 15000,
-“category_id”: 1 }
 
-============================== EXAMPLE CHECKOUT
-============================== { “items”: [ { “product_id”: 1, “qty”: 2
-} ] }
+Run Application
+go run main.go
 
-============================== ARCHITECTURE
-==============================
 
-Handler: - HTTP handling - Input validation
+Server berjalan di:
 
-Service: - Business logic
+http://localhost:8080
 
-Repository: - Database access
 
-Models: - Entity structs
 
-============================== FUTURE IMPROVEMENTS
-============================== - JWT Authentication - Unit Testing -
-Docker Support - Logging Middleware
 
-============================== AUTHOR ==============================
-GoCashier Project
+📘 Swagger Documentation
 
-============================== LICENSE ==============================
-MIT License
+Project ini menggunakan Swaggo untuk dokumentasi API otomatis.
+
+Generate Swagger Docs
+```
+swag init --parseInternal
+```
+
+
+Akses swagger
+http://localhost:8080/swagger/index.html
+
+
+
+
