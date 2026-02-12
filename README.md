@@ -30,6 +30,7 @@ API ini mendukung manajemen kategori, produk, transaksi checkout, serta laporan 
 
 # 📂 Project Structure
 
+```bash
 gocashier.db/
 │
 ├── api/
@@ -46,7 +47,7 @@ gocashier.db/
 ├── go.mod
 └── README.md
 
-
+```
 
 ---
 
@@ -58,10 +59,12 @@ gocashier.db/
 git clone https://github.com/yourusername/gocashier.git
 cd gocashier
 
-
+```
 Run Application
-go run main.go
 
+```bash
+go run main.go
+```
 
 Server berjalan di:
 
@@ -74,8 +77,11 @@ http://localhost:8080
 
 Project ini menggunakan Swaggo untuk dokumentasi API otomatis.
 
-Generate Swagger Docs
+
 ```
+Generate Swagger Docs
+
+```bash
 swag init --parseInternal
 ```
 
