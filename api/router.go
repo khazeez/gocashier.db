@@ -2,35 +2,39 @@ package api
 
 import (
 	"database/sql"
-	// _ "go-swagger/docs"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/gin-gonic/gin"
+
+	_ "gocashier.db/docs" // WAJIB untuk swagger
+
 	"gocashier.db/api/handler"
 	"gocashier.db/internal/repository"
 	"gocashier.db/internal/services"
 )
 
 func Router(db *sql.DB) *gin.Engine {
-	//category
+
+	// Category
 	categoryRepo := repository.NewcategoryRepository(db)
 	categoryService := services.NewcategoryService(categoryRepo)
 	categoryHandler := handler.NewCategoryHandler(categoryService)
 
-	//Product
+	// Product
 	productRepo := repository.NewProductRepository(db)
 	productService := services.NewProductService(productRepo)
 	productHandler := handler.NewProductHandler(productService)
 
-	//Transaction
+	// Transaction
 	transactionRepo := repository.NewTransactionRepository(db)
 	transactionService := services.NewTransactionService(transactionRepo)
 	transactionHandler := handler.NewTransactionHandler(transactionService)
 
 	r := gin.Default()
 
+	// Swagger endpoint
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	apiRouter := r.Group("/api")
@@ -39,8 +43,8 @@ func Router(db *sql.DB) *gin.Engine {
 		{
 			categoryRouter.POST("/", categoryHandler.Create)
 			categoryRouter.GET("/", categoryHandler.GetAll)
-			categoryRouter.PUT("/:ID", categoryHandler.UpdateById)
 			categoryRouter.GET("/:ID", categoryHandler.GetById)
+			categoryRouter.PUT("/:ID", categoryHandler.UpdateById)
 			categoryRouter.DELETE("/:ID", categoryHandler.DeleteById)
 		}
 
@@ -48,13 +52,13 @@ func Router(db *sql.DB) *gin.Engine {
 		{
 			productRouter.POST("/", productHandler.Create)
 			productRouter.GET("/", productHandler.GetAll)
-			productRouter.PUT("/:ID", productHandler.UpdateById)
 			productRouter.GET("/:ID", productHandler.GetById)
+			productRouter.PUT("/:ID", productHandler.UpdateById)
 			productRouter.DELETE("/:ID", productHandler.DeleteById)
 			productRouter.GET("/:ID/detail", productHandler.GetDetailProductById)
 		}
 
-		transactionRouter := apiRouter.Group("transaction")
+		transactionRouter := apiRouter.Group("/transaction") // FIXED
 		{
 			transactionRouter.POST("/checkout", transactionHandler.CreateTransaction)
 			transactionRouter.GET("/report/today", transactionHandler.GetReportToday)
@@ -63,5 +67,4 @@ func Router(db *sql.DB) *gin.Engine {
 	}
 
 	return r
-
 }

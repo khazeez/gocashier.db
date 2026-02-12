@@ -19,6 +19,16 @@ func NewTransactionHandler(transaactionService services.TransactionService) *tra
 	}
 }
 
+
+// CreateTransaction godoc
+// @Summary Checkout transaction
+// @Description Create new transaction from items
+// @Tags transactions
+// @Accept json
+// @Produce json
+// @Param request body models.CheckoutRequest true "Checkout Data"
+// @Success 200 {object} map[string]interface{}
+// @Router /transaction/checkout [post]
 func (t *transactionHandler) CreateTransaction(h *gin.Context) {
 	var items models.CheckoutRequest
 	err := h.ShouldBindJSON(&items)
@@ -44,6 +54,15 @@ func (t *transactionHandler) CreateTransaction(h *gin.Context) {
 
 }
 
+
+
+// GetReportToday godoc
+// @Summary Get today's transaction report
+// @Description Get all transactions for today
+// @Tags transactions
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Router /transaction/report/today [get]
 func (t *transactionHandler) GetReportToday(h *gin.Context) {
 	data, err := t.transactionService.GetReportToday()
 	if err != nil {
@@ -59,6 +78,17 @@ func (t *transactionHandler) GetReportToday(h *gin.Context) {
 	})
 }
 
+
+
+// GetReportWithRange godoc
+// @Summary Get transaction report by date range
+// @Description Get report between start_date and end_date
+// @Tags transactions
+// @Produce json
+// @Param start_date query string true "Start Date (YYYY-MM-DD)"
+// @Param end_date query string true "End Date (YYYY-MM-DD)"
+// @Success 200 {object} map[string]interface{}
+// @Router /transaction/report [get]
 func (t *transactionHandler) GetReportWithRange(h *gin.Context) {
 	startDateStr := h.Query("start_date")
 	endDateStr   := h.Query("end_date")

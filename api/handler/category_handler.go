@@ -20,6 +20,15 @@ func NewCategoryHandler(categoryService services.CategoryService) *categoryHandl
 
 }
 
+
+// Create godoc
+// @Summary Create new category
+// @Tags categories
+// @Accept json
+// @Produce json
+// @Param category body models.Category true "Category Data"
+// @Success 201 {object} models.Category
+// @Router /categories [post]
 func (c *categoryHandler) Create(h *gin.Context) {
 	var category models.Category
 
@@ -46,6 +55,14 @@ func (c *categoryHandler) Create(h *gin.Context) {
 	})
 }
 
+
+
+// GetAll godoc
+// @Summary Get all categories
+// @Tags categories
+// @Produce json
+// @Success 200 {array} models.Category
+// @Router /categories [get]
 func (c *categoryHandler) GetAll(h *gin.Context) {
 	data, err := c.categoryService.GetAll()
 	if err != nil {
@@ -61,6 +78,15 @@ func (c *categoryHandler) GetAll(h *gin.Context) {
 	})
 }
 
+// UpdateById godoc
+// @Summary Update category by ID
+// @Tags categories
+// @Accept json
+// @Produce json
+// @Param ID path int true "Category ID"
+// @Param category body models.Category true "Category Data"
+// @Success 200 {object} models.Category
+// @Router /categories/{ID} [put]
 func (c *categoryHandler) UpdateById(h *gin.Context) {
 	id, err := strconv.Atoi(h.Param("ID"))
 	if err != nil {
@@ -90,6 +116,13 @@ func (c *categoryHandler) UpdateById(h *gin.Context) {
 
 }
 
+// DeleteById godoc
+// @Summary Delete category by ID
+// @Tags categories
+// @Produce json
+// @Param ID path int true "Category ID"
+// @Success 200 {string} string "Success delete data"
+// @Router /categories/{ID} [delete]
 func (c *categoryHandler) DeleteById(h *gin.Context) {
 	id, err := strconv.Atoi(h.Param("ID"))
 	if err != nil {
@@ -110,6 +143,14 @@ func (c *categoryHandler) DeleteById(h *gin.Context) {
 
 }
 
+
+// GetById godoc
+// @Summary Get category by ID
+// @Tags categories
+// @Produce json
+// @Param ID path int true "Category ID"
+// @Success 200 {object} models.Category
+// @Router /categories/{ID} [get]
 func (c *categoryHandler) GetById(h *gin.Context) {
 	id, err := strconv.Atoi(h.Param("ID"))
 	if err != nil {
