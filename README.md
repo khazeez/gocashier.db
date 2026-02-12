@@ -74,6 +74,7 @@ http://localhost:8080
 
 
 📘 Swagger Documentation
+<<<<<<< HEAD
 
 Project ini menggunakan Swaggo untuk dokumentasi API otomatis.
 
@@ -87,3 +88,22 @@ swag init --parseInternal
 
 Akses swagger
 http://localhost:8080/swagger/index.html
+=======
+
+Project ini menggunakan Swaggo untuk dokumentasi API otomatis.
+
+
+Generate Swagger Docs
+
+```bash
+swag init --parseInternal
+```
+
+
+Akses swagger
+http://localhost:8080/swagger/index.html
+
+
+
+
+>>>>>>> cc424712919cb77a7dea7fcd685b7ff802e19327
