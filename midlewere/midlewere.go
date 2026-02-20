@@ -1,5 +1,0 @@
-package midlewere
-
-func midle() {
-	
-}
