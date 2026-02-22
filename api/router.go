@@ -8,9 +8,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	_ "gocashier.db/docs" // WAJIB untuk swagger
+	_ "gocashier.db/docs"
 
 	"gocashier.db/api/handler"
+	"gocashier.db/api/middleware" // tambahkan import ini
 	"gocashier.db/internal/repository"
 	"gocashier.db/internal/services"
 )
@@ -33,6 +34,9 @@ func Router(db *sql.DB) *gin.Engine {
 	transactionHandler := handler.NewTransactionHandler(transactionService)
 
 	r := gin.Default()
+
+	// Daftarkan middleware logger (sebelum routes)
+	r.Use(middleware.LoggerMiddleware())
 
 	// Swagger endpoint
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -58,7 +62,7 @@ func Router(db *sql.DB) *gin.Engine {
 			productRouter.GET("/:ID/detail", productHandler.GetDetailProductById)
 		}
 
-		transactionRouter := apiRouter.Group("/transaction") // FIXED
+		transactionRouter := apiRouter.Group("/transaction")
 		{
 			transactionRouter.POST("/checkout", transactionHandler.CreateTransaction)
 			transactionRouter.GET("/report/today", transactionHandler.GetReportToday)
